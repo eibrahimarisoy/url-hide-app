@@ -1,8 +1,9 @@
 from django.shortcuts import redirect, render
 from user.forms import LoginForm, RegisterForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 
 # Create your views here.
 
@@ -26,15 +27,13 @@ def user_register(request):
         return redirect("index")
 
     context["register_form"] = form
-    context['login_form'] = LoginForm()
-    return render(request, "page/index.html", context)
+    return render(request, "page/user_register.html", context)
 
 
 def user_login(request):
     context = dict()
     form = LoginForm(request.POST or None)
     context["login_form"] = form
-    context['register_form'] = RegisterForm()
     if form.is_valid():
         email = form.cleaned_data.get("email")
         password = form.cleaned_data.get("password")
@@ -44,17 +43,39 @@ def user_login(request):
             username = User.objects.get(email=email).username
         except User.DoesNotExist:
             messages.info(request, "Kullanıcı adı yanlış.")
-            return render(request, "page/index.html", context)
+            return render(request, "page/user_login.html", context)
 
         # check username and password are correct
         user = authenticate(request, username=username, password=password)
         if user is None:
             messages.info(request, "Kullanıcı adı veya parola yanlış.")
-            return render(request, "page/index.html", context)
+            return render(request, "page/user_login.html", context)
         else:
             messages.success(request, "Başarıyla giriş yaptınız.")
             # start new session for user
             login(request, user)
             return redirect("index")
 
-    return render(request, "page/index.html", context) 
+    return render(request, "page/user_login.html", context)
+
+
+def user_logout(request):
+    logout(request)
+    return render(request, "page/index.html")
+
+def user_change_password(request):
+    context = dict()
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password has been successfully changed!')
+            return redirect('user_profile')
+        else:
+            messages.error(request, 'You have logged in incorrectly!')
+    else:
+        form = PasswordChangeForm(request.user)
+
+    context['form'] = form
+    return render(request, 'page/user_password_change.html', context)

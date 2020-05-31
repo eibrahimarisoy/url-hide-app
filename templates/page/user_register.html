@@ -1,0 +1,43 @@
+{% extends "base/base.html" %}
+{% block content %}
+
+{% load crispy_forms_tags %}
+<div class="container  mt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h3 class="text-center">Kayıt Ol</h3>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row  border-top">
+                    <div class="col">
+                        {{ register_form.username | as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{ register_form.email | as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        {{ register_form.password | as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{ register_form.confirm | as_crispy_field }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-block btn-lg btn-danger">Kayıt Ol</button>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

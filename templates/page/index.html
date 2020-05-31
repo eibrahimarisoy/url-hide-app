@@ -8,60 +8,11 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col text-center">
-       <h2> URL-HIDE-APP URL Gizleme/Yönlendirme Uygulaması</h2>
-       <p>Hoşgeldiniz</p>
+      <h2> URL-HIDE-APP <br> URL Gizleme/Yönlendirme Uygulaması</h2>
+      <p>Hoşgeldiniz</p>
     </div>
   </div>
 </div>
 
-<div class="container">
-  <div class="row justify-content-center  align-items-center">
-    <div class="col-4">
-      <form method="POST">
-        <h4 class="text-center">Kayıt Ol</h4>
-        <hr>
-        {% csrf_token %}
-        <div class="row">
-          <div class="col">
-            {{ register_form.username | as_crispy_field }}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            {{ register_form.email | as_crispy_field }}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            {{ register_form.password | as_crispy_field }}
-          </div>
-          <div class="col-6">
-            {{ register_form.confirm | as_crispy_field }}
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col">
-            <button formmethod="POST" formaction="{% url 'user_register' %}" type="submit" class="btn btn-block btn-md btn-danger">Kayıt Ol</button>
-            <p class="text-center">*Hesabınız var ise yan taraftan giriş yapınız.</p>
-          </div>
-        </div>
-      </form>
-    </div>
-    <div class="col-2">
-
-    </div>
-    <div class="col-4">
-      <form method="POST">
-        <h4 class="text-center">Giriş Yap</h4>
-        <hr>
-        {% csrf_token %}
-        {{ login_form|crispy }}
-        <button formmethod="POST" formaction="{% url 'user_login' %}" type="submit" class="btn btn-block btn-md btn-danger">Giriş Yap</button>
-        <p class="text-center">*Hesabınız yok ise yan taraftan hesap oluşturunuz.</p>
-      </form>
-    </div>
-  </div>
-</div>
 
 {% endblock content %}
