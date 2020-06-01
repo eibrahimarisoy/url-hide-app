@@ -12,6 +12,26 @@
       <p>Hoşgeldiniz</p>
     </div>
   </div>
+  <div class="row justify-content-center">
+    <div class="col">
+      <form action="">
+        {% csrf_token %}
+        <div class="row justify-content-center align-items-center">
+          <div class="col-6">
+            {{ link_creation_form.exact_link | as_crispy_field }}
+          </div>
+          <div class="col-2">
+            <button formmethod="POST" formaction="{% url 'hide_link_create' %}" type="submit" class="btn btn-block btn-md btn-danger">Kısa Link Oluştur</button>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-6">
+            {{ link_creation_form.hide_link | as_crispy_field }}
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 

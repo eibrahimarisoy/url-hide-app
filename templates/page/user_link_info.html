@@ -1,0 +1,42 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md mr-auto">
+            <h3 class="text-center">Gizlenmiş/Kısaltılmış Linkleriniz</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Sıra No</th>
+                        <th scope="col">Asıl Link</th>
+                        <th scope="col">Gizli Link</th>
+                        <th scope="col">Linke Git</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for link in links %}
+
+                    <tr>
+
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            {{ link.exact_link}}
+                        </td>
+                        <td>
+                            {{link.hide_link}}
+                        </td>
+                        <td>
+                            <a href="{{link.hide_link}}" class="btn btn-primary">Linke Git</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

@@ -16,8 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from link.views import link_forward
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('link.urls')),
     path('', include('user.urls')),
+    path('<path:hide_link>/', link_forward, name="link_forward"),
+
 ]
