@@ -13,13 +13,13 @@
                         <th scope="col">Asıl Link</th>
                         <th scope="col">Gizli Link</th>
                         <th scope="col">Linke Git</th>
+                        <th scope="col">İstatistikler</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for link in links %}
 
                     <tr>
-
                         <td>{{ forloop.counter }}</td>
                         <td>
                             {{ link.exact_link}}
@@ -28,7 +28,10 @@
                             {{link.hide_link}}
                         </td>
                         <td>
-                            <a href="{{link.hide_link}}" class="btn btn-primary">Linke Git</a>
+                            <a href="{{ link.hide_link }}" class="btn btn-primary">Linke Git</a>
+                        </td>
+                        <td>
+                            <a href="" class="btn btn-secondary">İstatistik</a>
                         </td>
                     </tr>
                     {% endfor %}

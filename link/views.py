@@ -1,11 +1,12 @@
 import random
 import string
-
+import datetime
 from django.shortcuts import redirect, render
 from .models import Link, ClickCount
 from .forms import LinkCreationForm
 
-BASE_URL = 'localhost:8000/'
+
+BASE_URL = 'http://localhost:8000/'
 
 
 
@@ -50,5 +51,20 @@ def link_forward(request, hide_link):
     print(hide_link)
     hide_link = BASE_URL + hide_link
     link = Link.objects.get(hide_link=hide_link)
-    
+    today = datetime.date.today()
+    click_count, created = ClickCount.objects.get_or_create(
+        link=link,
+        date=today,
+    )
+    if not created:
+        click_count.save()
+        click_count = click_count
+
+    click_count.count += 1
+    click_count.save()
+
+    ip = request.META.get('REMOTE_ADDR', None)
+    print(f"Tıklanma : {click_count.count}")
+    print(f"browser : {request.user_agent.browser.family}")
+    print(f"işletim sistemi : {request.user_agent.os.family}")
     return redirect(link.exact_link)
