@@ -23,6 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('link.urls')),
     path('', include('user.urls')),
-    path('<path:hide_link>/', link_forward, name="link_forward"),
+    path('<slug:slug>/', link_forward, name="link_forward"),
 
 ]

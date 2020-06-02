@@ -140,6 +140,8 @@ STATICFILES_DIRS = (
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
+LOGIN_URL = '/user-login/'
+
 # # Cache backend is optional, but recommended to speed up user agent parsing
 # CACHES = {
 #     'default': {

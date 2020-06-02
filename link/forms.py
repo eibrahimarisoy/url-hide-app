@@ -15,3 +15,4 @@ class LinkCreationForm(ModelForm):
 
         self.fields['exact_link'].widget.attrs['placeholder'] = "http://..."
         self.fields['hide_link'].required = False
+        self.fields['hide_link'].widget.attrs['readonly'] = True

@@ -4,7 +4,7 @@ import string
 import random
 
 # Create your models here.
-BASE_URL = 'http://localhost:8000/'
+# BASE_URL = 'http://localhost:8000/'
 
 class Link(models.Model):
     owner = models.ForeignKey(
@@ -35,10 +35,11 @@ class Link(models.Model):
         letters = string.ascii_lowercase
         return ''.join(random.choice(letters) for i in range(stringLength))
 
-    def save(self, *args, **kwargs):
+    def save(self, request, *args, **kwargs):
         random_string = self.random_string()
+        BASE_URL = request.META.get('HTTP_HOST')
         self.slug = random_string
-        self.hide_link = f"{BASE_URL}{random_string}"
+        self.hide_link = f"{BASE_URL}/{self.slug}"
         super(Link, self).save(*args, **kwargs)
 
 

@@ -1,11 +1,13 @@
+import datetime
 import random
 import string
-import datetime
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
-from django.shortcuts import get_object_or_404, redirect, render
-from .models import Link, Click, Browser, OperatingSystem
 from .forms import LinkCreationForm
+from .models import Browser, Click, Link, OperatingSystem
 
 BASE_URL = 'http://localhost:8000/'
 
@@ -16,6 +18,7 @@ def index(request):
     return render(request, 'page/index.html', context)
 
 
+@login_required
 def hide_link_create(request):
     context = dict()
     link_creation_form = LinkCreationForm(request.POST or None)
@@ -23,10 +26,12 @@ def hide_link_create(request):
         if link_creation_form.is_valid():
             new_link = link_creation_form.save(commit=False)
             new_link.owner = request.user
-            new_link.save()
+            new_link.save(request)
 
             print(new_link.hide_link)
-            context['link_creation_form'] = LinkCreationForm(instance=new_link)
+            context['link_creation_form'] = LinkCreationForm(
+                instance=new_link
+                )
             return render(request, "page/index.html", context)
     
     return render(request, "page/index.html", context)
@@ -41,14 +46,13 @@ def user_link_info(request):
     return render(request, 'page/user_link_info.html', context)
 
 
-def link_forward(request, hide_link):
-    hide_link = BASE_URL + hide_link
-    link = get_object_or_404(Link, hide_link=hide_link)
-    print(link)
+def link_forward(request, slug):
+    link = get_object_or_404(Link, slug=slug)
+    
     # increment click count
     click_count, created = Click.objects.get_or_create(
-        link=link,
-        date=datetime.date.today(),
+         link=link,
+         date=datetime.date.today(),
     )
     if not created:
         click_count.save()
@@ -56,6 +60,7 @@ def link_forward(request, hide_link):
 
     click_count.count += 1
     click_count.save()
+
     # added browser type to db
     Browser.objects.create(
         link=link,
@@ -68,7 +73,6 @@ def link_forward(request, hide_link):
         name=request.user_agent.os.family,
         click_time=timezone.now()
     )
-
     return redirect(link.exact_link)
 
 
@@ -87,7 +91,9 @@ def link_statistics(request, id):
     for browser in browser_queryset.values('name').distinct():
         item = {
             'name': browser.get('name'),
-            'click_count': browser_queryset.filter(name=browser.get('name')).count()
+            'click_count': browser_queryset.filter(
+                        name=browser.get('name')
+                        ).count()
         }
         browsers_info.append(item)
 
@@ -97,7 +103,9 @@ def link_statistics(request, id):
     for os in os_queryset.values('name').distinct():
         item = {
             'name': os.get('name'),
-            'click_count': os_queryset.filter(name=os.get('name')).count()
+            'click_count': os_queryset.filter(
+                name=os.get('name')
+                ).count()
         }
         os_info.append(item)
 

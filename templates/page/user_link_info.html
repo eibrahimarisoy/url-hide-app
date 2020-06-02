@@ -28,7 +28,7 @@
                             {{link.hide_link}}
                         </td>
                         <td style="width:10%">
-                            <a href="{{ link.hide_link }}" class="btn btn-primary">Linke Git</a>
+                            <a href="{% url 'link_forward' link.slug %}" class="btn btn-primary">Linke Git</a>
                             <a href="{% url 'link_delete' link.id %}" class="btn btn-danger">Link Sil</a>
                         </td>
                         <td style="width:10%">

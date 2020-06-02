@@ -61,7 +61,7 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    return render(request, "page/index.html")
+    return redirect("index")
 
 def user_change_password(request):
     context = dict()
