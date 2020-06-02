@@ -2,7 +2,7 @@ import random
 import string
 import datetime
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Link, ClickCount
+from .models import Link, Click
 from .forms import LinkCreationForm
 
 
@@ -52,7 +52,7 @@ def link_forward(request, hide_link):
     hide_link = BASE_URL + hide_link
     link = Link.objects.get(hide_link=hide_link)
     today = datetime.date.today()
-    click_count, created = ClickCount.objects.get_or_create(
+    click_count, created = Click.objects.get_or_create(
         link=link,
         date=today,
     )

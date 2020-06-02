@@ -29,7 +29,7 @@ class Link(models.Model):
         return f"{self.exact_link} - {self.hide_link}"
 
 
-class ClickCount(models.Model):
+class Click(models.Model):
     link = models.ForeignKey(
         'Link',
         on_delete=models.SET_NULL,
@@ -49,3 +49,33 @@ class ClickCount(models.Model):
 
     def __str__(self):
         return f"{self.link} - {self.date} - {self.count}"
+
+
+class Browser(models.Model):
+    link = models.ForeignKey(
+        'Link',
+        on_delete=models.CASCADE,
+    )
+    name = models.CharField(max_length=200)
+    click_time = models.DateTimeField()
+
+    class Meta:
+        ordering = ['link']
+
+    def __str__(self):
+        return f"{self.name} - {self.link} - {self.click_time}"
+
+
+class OperatingSystem(models.Model):
+    link = models.ForeignKey(
+        'Link',
+        on_delete=models.CASCADE,
+    )
+    name = models.CharField(max_length=200)
+    click_time = models.DateTimeField()
+
+    class Meta:
+        ordering = ['link']
+
+    def __str__(self):
+        return f"{self.name} - {self.link} - {self.click_time}"

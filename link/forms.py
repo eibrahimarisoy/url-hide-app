@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from .models import Link, ClickCount
+from .models import Link
 from django.forms.fields import URLField
 
 class LinkCreationForm(ModelForm):
