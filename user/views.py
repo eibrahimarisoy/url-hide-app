@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from user.forms import LoginForm, RegisterForm
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth import authenticate, login, logout, \
+                                update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
@@ -63,6 +64,7 @@ def user_logout(request):
     logout(request)
     return redirect("index")
 
+
 def user_change_password(request):
     context = dict()
     if request.method == 'POST':
@@ -70,7 +72,7 @@ def user_change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            messages.success(request, 'Your password has been successfully changed!')
+            messages.success(request, 'Parolanız başarıyla değiştirildi.')
             return redirect('user_profile')
         else:
             messages.error(request, 'You have logged in incorrectly!')

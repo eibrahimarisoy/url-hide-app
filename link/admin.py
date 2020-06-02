@@ -6,4 +6,3 @@ admin.site.register(Link)
 admin.site.register(Click)
 admin.site.register(Browser)
 admin.site.register(OperatingSystem)
-

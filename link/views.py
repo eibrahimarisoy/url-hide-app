@@ -1,6 +1,4 @@
 import datetime
-import random
-import string
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
@@ -33,14 +31,14 @@ def hide_link_create(request):
                 instance=new_link
                 )
             return render(request, "page/index.html", context)
-    
+
     return render(request, "page/index.html", context)
 
 
 def user_link_info(request):
     context = dict()
     links = Link.objects.filter(
-        owner = request.user
+        owner=request.user
     )
     context['links'] = links
     return render(request, 'page/user_link_info.html', context)
@@ -48,7 +46,7 @@ def user_link_info(request):
 
 def link_forward(request, slug):
     link = get_object_or_404(Link, slug=slug)
-    
+
     # increment click count
     click_count, created = Click.objects.get_or_create(
          link=link,

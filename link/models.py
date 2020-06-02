@@ -6,6 +6,7 @@ import random
 # Create your models here.
 # BASE_URL = 'http://localhost:8000/'
 
+
 class Link(models.Model):
     owner = models.ForeignKey(
         User,
@@ -26,10 +27,10 @@ class Link(models.Model):
         verbose_name = 'Link'
         verbose_name_plural = 'Linkler'
         ordering = ['created_at']
-    
+
     def __str__(self):
         return f"{self.exact_link} >> {self.hide_link}"
-    
+
     @classmethod
     def random_string(cls, stringLength=10):
         letters = string.ascii_lowercase

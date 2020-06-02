@@ -1,5 +1,4 @@
 from django import forms
-from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
 
@@ -38,7 +37,7 @@ class RegisterForm(forms.Form):
             errors['confirm'] = 'Parolanız Eşleşmiyor.'
         if errors:
             raise forms.ValidationError(errors)
-    
+
     def clean_username(self):
         data = self.cleaned_data['username']
         return data
