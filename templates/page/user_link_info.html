@@ -9,28 +9,29 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">Sıra No</th>
-                        <th scope="col">Asıl Link</th>
-                        <th scope="col">Gizli Link</th>
-                        <th scope="col">Linke Git</th>
-                        <th scope="col">İstatistikler</th>
+                        <th scope="col-1">Sıra No</th>
+                        <th scope="col-2">Asıl Link</th>
+                        <th scope="col-2">Gizli Link</th>
+                        <th scope="col-1">İşlemler</th>
+                        <th scope="col-1">İstatistikler</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for link in links %}
 
                     <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>
+                        <td style="width:5%">{{ forloop.counter }}</td>
+                        <td style="width:15%">
                             {{ link.exact_link}}
                         </td>
-                        <td>
+                        <td style="width:10%">
                             {{link.hide_link}}
                         </td>
-                        <td>
+                        <td style="width:10%">
                             <a href="{{ link.hide_link }}" class="btn btn-primary">Linke Git</a>
+                            <a href="{% url 'link_delete' link.id %}" class="btn btn-danger">Link Sil</a>
                         </td>
-                        <td>
+                        <td style="width:10%">
                             <a href="" class="btn btn-secondary">İstatistik</a>
                         </td>
                     </tr>

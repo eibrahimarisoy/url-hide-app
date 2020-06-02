@@ -16,9 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from link.views import link_forward
+from link.views import link_forward, index
 
 urlpatterns = [
+    path('', index, name='index'),
     path('admin/', admin.site.urls),
     path('', include('link.urls')),
     path('', include('user.urls')),

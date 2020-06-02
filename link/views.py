@@ -1,7 +1,7 @@
 import random
 import string
 import datetime
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import Link, ClickCount
 from .forms import LinkCreationForm
 
@@ -68,3 +68,9 @@ def link_forward(request, hide_link):
     print(f"browser : {request.user_agent.browser.family}")
     print(f"işletim sistemi : {request.user_agent.os.family}")
     return redirect(link.exact_link)
+
+
+def link_delete(request, id):
+    link = get_object_or_404(Link, id=id)
+    link.delete()
+    return redirect('user_link_info')
