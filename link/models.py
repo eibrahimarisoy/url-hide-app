@@ -13,6 +13,7 @@ class Link(models.Model):
         null=True
     )
     exact_link = models.URLField(verbose_name='Asıl Link')
+    slug = models.SlugField(blank=True, null=True)
     hide_link = models.URLField(
         verbose_name='Gizli/Yönlendirilmiş Link',
         unique=True
@@ -26,8 +27,8 @@ class Link(models.Model):
         ordering = ['created_at']
     
     def __str__(self):
-        return f"{self.exact_link} - {self.hide_link}"
-
+        return f"{self.exact_link} >> {self.hide_link}"
+   
 
 class Click(models.Model):
     link = models.ForeignKey(
@@ -48,7 +49,7 @@ class Click(models.Model):
         ordering = ['link']
 
     def __str__(self):
-        return f"{self.link} - {self.date} - {self.count}"
+        return f"{self.link} >> {self.date} >> {self.count}"
 
 
 class Browser(models.Model):
@@ -63,7 +64,7 @@ class Browser(models.Model):
         ordering = ['link']
 
     def __str__(self):
-        return f"{self.name} - {self.link} - {self.click_time}"
+        return f"{self.name} >> {self.link} >> {self.click_time}"
 
 
 class OperatingSystem(models.Model):
@@ -78,4 +79,4 @@ class OperatingSystem(models.Model):
         ordering = ['link']
 
     def __str__(self):
-        return f"{self.name} - {self.link} - {self.click_time}"
+        return f"{self.name} >> {self.link} >> {self.click_time}"

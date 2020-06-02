@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row mt-3">
         <div class="col-md mr-auto">
-            <h3 class="text-center">Gizlenmiş/Kısaltılmış Linkleriniz</h3>
+            <h3 class="text-center"><a href="{% url 'link_forward' link.hide_link %}">{{ link.hide_link}}</a> <br> İstatistikleri</h3>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -17,8 +17,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for link in links %}
-
                     <tr>
                         <td style="width:5%">{{ forloop.counter }}</td>
                         <td style="width:15%">
@@ -32,10 +30,9 @@
                             <a href="{% url 'link_delete' link.id %}" class="btn btn-danger">Link Sil</a>
                         </td>
                         <td style="width:10%">
-                            <a href="{% url 'link_statistics' link.id %}" class="btn btn-secondary">İstatistik</a>
+                            <a href="" class="btn btn-secondary">İstatistik</a>
                         </td>
                     </tr>
-                    {% endfor %}
                 </tbody>
             </table>
         </div>
