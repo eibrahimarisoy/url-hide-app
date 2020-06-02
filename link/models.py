@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+import string
+import random
 
 # Create your models here.
 BASE_URL = 'http://localhost:8000/'
-
 
 class Link(models.Model):
     owner = models.ForeignKey(
@@ -28,7 +29,18 @@ class Link(models.Model):
     
     def __str__(self):
         return f"{self.exact_link} >> {self.hide_link}"
-   
+    
+    @classmethod
+    def random_string(cls, stringLength=10):
+        letters = string.ascii_lowercase
+        return ''.join(random.choice(letters) for i in range(stringLength))
+
+    def save(self, *args, **kwargs):
+        random_string = self.random_string()
+        self.slug = random_string
+        self.hide_link = f"{BASE_URL}{random_string}"
+        super(Link, self).save(*args, **kwargs)
+
 
 class Click(models.Model):
     link = models.ForeignKey(

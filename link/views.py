@@ -10,10 +10,6 @@ from .forms import LinkCreationForm
 BASE_URL = 'http://localhost:8000/'
 
 
-def random_string(stringLength=10):
-    letters = string.ascii_lowercase
-    return ''.join(random.choice(letters) for i in range(stringLength))
-
 def index(request):
     context = dict()
     context['link_creation_form'] = LinkCreationForm()
@@ -27,10 +23,9 @@ def hide_link_create(request):
         if link_creation_form.is_valid():
             new_link = link_creation_form.save(commit=False)
             new_link.owner = request.user
-            new_link.hide_link = f"{BASE_URL}{random_string()}"
-            print(new_link.hide_link)
             new_link.save()
 
+            print(new_link.hide_link)
             context['link_creation_form'] = LinkCreationForm(instance=new_link)
             return render(request, "page/index.html", context)
     
@@ -87,5 +82,26 @@ def link_statistics(request, id):
     context = dict()
     link = get_object_or_404(Link, id=id)
 
+    browser_queryset = Browser.objects.filter(link=link)
+    browsers_info = []
+    for browser in browser_queryset.values('name').distinct():
+        item = {
+            'name': browser.get('name'),
+            'click_count': browser_queryset.filter(name=browser.get('name')).count()
+        }
+        browsers_info.append(item)
+
+    os_queryset = OperatingSystem.objects.filter(link=link)
+    os_info = []
+
+    for os in os_queryset.values('name').distinct():
+        item = {
+            'name': os.get('name'),
+            'click_count': os_queryset.filter(name=os.get('name')).count()
+        }
+        os_info.append(item)
+
+    context['browsers_info'] = browsers_info
+    context['os_info'] = os_info
     context['link'] = link
     return render(request, 'page/link_statistics.html', context)
