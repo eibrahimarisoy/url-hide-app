@@ -1,10 +1,10 @@
-from django.db import models
-from django.contrib.auth.models import User
-import string
 import random
+import string
 
-# Create your models here.
-# BASE_URL = 'http://localhost:8000/'
+from django.contrib.auth.models import User
+from django.db import models
+
+from django.conf import settings
 
 
 class Link(models.Model):
@@ -16,7 +16,8 @@ class Link(models.Model):
     )
     exact_link = models.URLField(verbose_name='Asıl Link')
     slug = models.SlugField(blank=True, null=True)
-    hide_link = models.URLField(
+    hide_link = models.CharField(
+        max_length=255,
         verbose_name='Gizli/Yönlendirilmiş Link',
         unique=True
     )
@@ -36,11 +37,11 @@ class Link(models.Model):
         letters = string.ascii_lowercase
         return ''.join(random.choice(letters) for i in range(stringLength))
 
-    def save(self, request, *args, **kwargs):
+    def save(self, *args, **kwargs):
         random_string = self.random_string()
-        BASE_URL = request.META.get('HTTP_HOST')
+        BASE_URL = settings.BASE_URL
         self.slug = random_string
-        self.hide_link = f"{BASE_URL}/{self.slug}"
+        self.hide_link = f"{BASE_URL}{self.slug}"
         super(Link, self).save(*args, **kwargs)
 
 

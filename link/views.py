@@ -23,15 +23,17 @@ def hide_link_create(request):
     if request.method == "POST":
         if link_creation_form.is_valid():
             new_link = link_creation_form.save(commit=False)
-            new_link.owner = request.user
-            new_link.save(request)
-
+            new_link.hide_link = ""
             print(new_link.hide_link)
+            new_link.owner = request.user
+            new_link.save()
+
             context['link_creation_form'] = LinkCreationForm(
                 instance=new_link
                 )
             return render(request, "page/index.html", context)
 
+    context['link_creation_form'] = link_creation_form
     return render(request, "page/index.html", context)
 
 

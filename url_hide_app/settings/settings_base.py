@@ -14,8 +14,6 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-GEOIP_PATH = os.path.join(BASE_DIR, 'geoip2')
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -27,7 +25,7 @@ SECRET_KEY = 'xkonw_uhds83b)a3we=xm(3063p7w9d9&o*2#@ag*-*9ea80&@'
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '192.168.1.36']
-
+BASE_URL = 'http://localhost:8000/'
 
 # Application definition
 
