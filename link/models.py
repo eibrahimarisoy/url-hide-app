@@ -14,7 +14,7 @@ class Link(models.Model):
         blank=True,
         null=True
     )
-    exact_link = models.URLField(verbose_name='Asıl Link')
+    exact_link = models.URLField(verbose_name='URL giriniz.')
     slug = models.SlugField(blank=True, null=True)
     hide_link = models.CharField(
         max_length=255,

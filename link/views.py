@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
-from .forms import LinkCreationForm
+from .forms import LinkCreationForm, LinkForwardForm
 from .models import Browser, Click, Link, OperatingSystem
 
 BASE_URL = 'http://localhost:8000/'
@@ -32,6 +32,9 @@ def hide_link_create(request):
             context['link_creation_form'] = LinkCreationForm(
                 instance=new_link
                 )
+            context['link_forward_form'] = LinkForwardForm(
+                instance=new_link
+            )
             messages.success(request, "Kısa Linkiniz Başarıyla Oluşturuldu.")
             return render(request, "page/index.html", context)
 
