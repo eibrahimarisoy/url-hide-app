@@ -1,7 +1,8 @@
-from datetime import datetime, date, timedelta
+from datetime import date, datetime, timedelta
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
@@ -48,6 +49,16 @@ def user_link_info(request):
     links = Link.objects.filter(
         owner=request.user
     )
+    page = request.GET.get('page', 1)
+    paginator = Paginator(links, 10)
+
+    try:
+        links = paginator.page(page)
+    except PageNotAnInteger:
+        links = paginator.page(1)
+    except EmptyPage:
+        links = paginator.page(paginator.num_pages)
+
     context['links'] = links
     return render(request, 'page/user_link_info.html', context)
 
