@@ -6,7 +6,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
-from .forms import LinkCreationForm, LinkForwardForm
+from .forms import LinkCreationForm
 from .models import Browser, Click, Link, OperatingSystem
 
 BASE_URL = 'http://localhost:8000/'
@@ -26,18 +26,11 @@ def hide_link_create(request):
         if link_creation_form.is_valid():
             new_link = link_creation_form.save(commit=False)
             new_link.hide_link = ""
-            print(new_link.hide_link)
             new_link.owner = request.user
             new_link.save()
 
-            context['link_creation_form'] = LinkCreationForm(
-                instance=new_link
-                )
-            context['link_forward_form'] = LinkForwardForm(
-                instance=new_link
-            )
             messages.success(request, "Kısa Linkiniz Başarıyla Oluşturuldu.")
-            return render(request, "page/index.html", context)
+            return redirect('link_statistics', id=new_link.id)
 
     context['link_creation_form'] = link_creation_form
     return render(request, "page/index.html", context)

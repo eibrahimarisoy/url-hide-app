@@ -5,7 +5,7 @@
 
 
 {% block content %}
-<div class="container mt-3">
+<div class="container mt-5">
   <div class="row">
     <div class="col text-center">
       <h2>URL-HIDE-APP </h2>
@@ -26,15 +26,7 @@
               class="btn btn-md btn-danger">Link Oluştur</button>
           </div>
         </div>
-        <div class="row justify-content-center align-items-center">
-          <div class="col-md-6">
-            {{ link_forward_form|crispy }}
-          </div>
-        </form>
-          <div class="col-md-3">
-            <a id="forward" href="{{link_forward_form.hide_link.value}}" class="btn btn-md btn-danger">Linke Git</a>
-          </div>
-        </div>
+      </form>
     </div>
   </div>
   {% else %}
@@ -45,15 +37,5 @@
   </div>
   {% endif %}
 </div>
-
-<script type="text/javascript">
-
-  $(document).ready(function(){
-    if (!$('#id_hide_link').val()){
-        $('#forward').hide()
-    }
-  })
-
-</script>
 
 {% endblock content %}

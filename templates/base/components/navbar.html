@@ -8,11 +8,11 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'index' %}">Anasayfa <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{% url 'index' %}">Link Oluştur<span class="sr-only">(current)</span></a>
                 </li>
                 {% if request.user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'user_link_info' %}">Link Bilgileri</a>
+                    <a class="nav-link active" href="{% url 'user_link_info' %}">Linklerim</a>
                 </li>          
                 {% endif %}
 

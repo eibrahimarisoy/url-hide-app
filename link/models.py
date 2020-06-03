@@ -27,7 +27,7 @@ class Link(models.Model):
     class Meta:
         verbose_name = 'Link'
         verbose_name_plural = 'Linkler'
-        ordering = ['created_at']
+        ordering = ['-created_at']
 
     def __str__(self):
         return f"{self.exact_link} >> {self.hide_link}"
