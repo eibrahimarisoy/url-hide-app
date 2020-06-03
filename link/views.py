@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, date, timedelta
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -57,7 +57,7 @@ def link_forward(request, slug):
     # increment click count
     click_count, created = Click.objects.get_or_create(
          link=link,
-         date=datetime.date.today(),
+         date=date.today(),
     )
     if not created:
         click_count.save()
@@ -93,7 +93,7 @@ def link_delete(request, id):
 @login_required
 def link_statistics(request, id):
     context = dict()
-    link = get_object_or_404(Link, id=id)
+    link = get_object_or_404(Link, id=id, owner=request.user)
 
     # getting the browser information of the link
     browser_queryset = Browser.objects.filter(link=link)
@@ -119,6 +119,29 @@ def link_statistics(request, id):
         }
         os_info.append(item)
 
+    # getting total click count information
+    click_count_queryset = Click.objects.filter(link=link)
+    click_count_info = []
+    total_click = 0
+    for item in click_count_queryset:
+        total_click += item.count
+
+    # getting number of clicks during the day
+    today = date.today()
+    daily_click = click_count_queryset.filter(date=today).count
+
+    # getting click count in the past week
+    last_week = today - timedelta(days=7)
+    weekly_click = click_count_queryset.filter(date__gte=last_week).count
+
+    # getting click count in the past month
+    last_month = today - timedelta(days=30)
+    monthly_click = click_count_queryset.filter(date__gte=last_month).count
+    
+    context['monthly_click'] = monthly_click
+    context['weekly_click'] = weekly_click
+    context['daily_click'] = daily_click
+    context['total_click'] = total_click
     context['browsers_info'] = browsers_info
     context['os_info'] = os_info
     context['link'] = link
