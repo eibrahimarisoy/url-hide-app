@@ -1,12 +1,12 @@
-from django.shortcuts import redirect, render
-from user.forms import LoginForm, RegisterForm
-from django.contrib.auth import authenticate, login, logout, \
-                                update_session_auth_hash
 from django.contrib import messages
-from django.contrib.auth.models import User
+from django.contrib.auth import (authenticate, login, logout,
+                                 update_session_auth_hash)
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.models import User
+from django.shortcuts import redirect, render
 
-# Create your views here.
+from user.forms import LoginForm, RegisterForm
 
 
 def user_register(request):
@@ -60,11 +60,13 @@ def user_login(request):
     return render(request, "page/user_login.html", context)
 
 
+@login_required
 def user_logout(request):
     logout(request)
     return redirect("index")
 
 
+@login_required
 def user_change_password(request):
     context = dict()
     if request.method == 'POST':
@@ -73,9 +75,9 @@ def user_change_password(request):
             user = form.save()
             update_session_auth_hash(request, user)
             messages.success(request, 'Parolanız başarıyla değiştirildi.')
-            return redirect('user_profile')
+            return redirect('user_link_info')
         else:
-            messages.error(request, 'You have logged in incorrectly!')
+            messages.error(request, 'Lütfen parolanızı doğru giriniz.')
     else:
         form = PasswordChangeForm(request.user)
 

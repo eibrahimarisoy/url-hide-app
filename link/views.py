@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -31,12 +32,14 @@ def hide_link_create(request):
             context['link_creation_form'] = LinkCreationForm(
                 instance=new_link
                 )
+            messages.success(request, "Kısa Linkiniz Başarıyla Oluşturuldu.")
             return render(request, "page/index.html", context)
 
     context['link_creation_form'] = link_creation_form
     return render(request, "page/index.html", context)
 
 
+@login_required
 def user_link_info(request):
     context = dict()
     links = Link.objects.filter(
@@ -48,7 +51,6 @@ def user_link_info(request):
 
 def link_forward(request, slug):
     link = get_object_or_404(Link, slug=slug)
-
     # increment click count
     click_count, created = Click.objects.get_or_create(
          link=link,
@@ -57,7 +59,6 @@ def link_forward(request, slug):
     if not created:
         click_count.save()
         click_count = click_count
-
     click_count.count += 1
     click_count.save()
 
@@ -67,25 +68,31 @@ def link_forward(request, slug):
         name=request.user_agent.browser.family,
         click_time=timezone.now()
     )
+
     # added operating system name to db
     OperatingSystem.objects.create(
         link=link,
         name=request.user_agent.os.family,
         click_time=timezone.now()
     )
+    # redirect to exact link
     return redirect(link.exact_link)
 
 
+@login_required
 def link_delete(request, id):
     link = get_object_or_404(Link, id=id)
     link.delete()
+    messages.success(request, "Link Başarıyla Silindi.")
     return redirect('user_link_info')
 
 
+@login_required
 def link_statistics(request, id):
     context = dict()
     link = get_object_or_404(Link, id=id)
 
+    # getting the browser information of the link
     browser_queryset = Browser.objects.filter(link=link)
     browsers_info = []
     for browser in browser_queryset.values('name').distinct():
@@ -97,9 +104,9 @@ def link_statistics(request, id):
         }
         browsers_info.append(item)
 
+    # getting the operating system information of the link
     os_queryset = OperatingSystem.objects.filter(link=link)
     os_info = []
-
     for os in os_queryset.values('name').distinct():
         item = {
             'name': os.get('name'),

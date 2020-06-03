@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import hide_link_create, user_link_info, link_delete, \
-    link_statistics
+
+from .views import (hide_link_create, link_delete, link_statistics,
+                    user_link_info)
 
 urlpatterns = [
     path('hide-link-create/', hide_link_create, name="hide_link_create"),
