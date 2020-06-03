@@ -5,9 +5,53 @@
 <div class="container mt-3">
     <h3 class="text-center"><a href="{{ link.hide_link }}">{{ link.hide_link}}</a> <br>
         İstatistikleri</h3>
+
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-6">
+            <h3 class="text-center">Tıklanma İstatistikleri</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Kısa Link</th>
+                        <th scope="col">Toplan Tıklanma Sayısı</th>
+                        <th scope="col">Günlük Tıklanma Sayısı</th>
+                        <th scope="col">Haftalık Tıklanma Sayısı</th>
+                        <th scope="col">Aylık Tıklanma Sayısı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {{ link.hide_link}}
+                        </td>
+                        <td>
+                            {{ click.total }}
+                        </td>
+                        <td>
+                            {{ click.daily }}
+                        </td>
+                        <td>
+                            {{ click.weekly }}
+                        </td>
+                        <td>
+                            {{ click.monthly }}
+                        </td>
+                    </tr>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+
+
     <div class="row mt-3">
 
         <div class="col-md-6">
+            <h3 class="text-center">Browser İstatistikleri</h3>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -35,6 +79,7 @@
             </table>
         </div>
         <div class="col-md-6">
+            <h3 class="text-center">İşletim Sistemi İstatistikleri</h3>
             <table class="table table-striped">
                 <thead>
                     <tr>
