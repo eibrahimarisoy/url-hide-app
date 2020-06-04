@@ -3,14 +3,12 @@ from datetime import date, datetime, timedelta
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
 from .forms import LinkCreationForm
 from .models import Browser, Click, Link, OperatingSystem
-from django.db import IntegrityError
-
-BASE_URL = 'http://localhost:8000/'
 
 
 def index(request):

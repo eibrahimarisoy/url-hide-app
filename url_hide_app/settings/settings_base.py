@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from django.http import HttpRequest
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +27,8 @@ SECRET_KEY = 'xkonw_uhds83b)a3we=xm(3063p7w9d9&o*2#@ag*-*9ea80&@'
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '192.168.1.36']
-BASE_URL = 'http://localhost:8000/'
+BASE_URL = os.environ.get('BASE_URL')
+
 
 # Application definition
 
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     # Third Party Application
     'crispy_forms',
     'django_user_agents',
+
 
 
     # Own Application
