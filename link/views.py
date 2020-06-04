@@ -8,6 +8,7 @@ from django.utils import timezone
 
 from .forms import LinkCreationForm
 from .models import Browser, Click, Link, OperatingSystem
+from django.db import IntegrityError
 
 BASE_URL = 'http://localhost:8000/'
 
@@ -23,14 +24,18 @@ def hide_link_create(request):
     context = dict()
     link_creation_form = LinkCreationForm(request.POST or None)
     if request.method == "POST":
-        if link_creation_form.is_valid():
-            new_link = link_creation_form.save(commit=False)
-            new_link.hide_link = ""
-            new_link.owner = request.user
-            new_link.save()
+        try:
+            if link_creation_form.is_valid():
+                new_link = link_creation_form.save(commit=False)
+                new_link.owner = request.user
+                new_link.save()
+                messages.success(request, "Kısa Linkiniz Başarıyla Oluşturuldu.")
+                return redirect('link_statistics', id=new_link.id)
 
-            messages.success(request, "Kısa Linkiniz Başarıyla Oluşturuldu.")
-            return redirect('link_statistics', id=new_link.id)
+        except IntegrityError:
+            link = get_object_or_404(Link, exact_link=request.POST['exact_link'])
+            messages.warning(request, "Bu linke ait kısaltılmış link bulunmaktadır.")
+            return redirect('link_statistics', id=link.id)
 
     context['link_creation_form'] = link_creation_form
     return render(request, "page/index.html", context)

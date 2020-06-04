@@ -15,7 +15,7 @@ class Link(models.Model):
         null=True
     )
     exact_link = models.URLField(verbose_name='URL giriniz.')
-    slug = models.SlugField(blank=True, null=True)
+    slug = models.SlugField(blank=True, null=True, unique=True)
     hide_link = models.CharField(
         max_length=255,
         verbose_name='Gizli/Yönlendirilmiş Link',
@@ -28,12 +28,12 @@ class Link(models.Model):
         verbose_name = 'Link'
         verbose_name_plural = 'Linkler'
         ordering = ['-created_at']
+        unique_together = ('owner', 'exact_link')
 
     def __str__(self):
         return f"{self.exact_link} >> {self.hide_link}"
 
-    @classmethod
-    def random_string(cls, stringLength=10):
+    def random_string(self, stringLength=10):
         letters = string.ascii_lowercase
         return ''.join(random.choice(letters) for i in range(stringLength))
 
